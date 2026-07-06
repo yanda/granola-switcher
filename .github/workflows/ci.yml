@@ -1,0 +1,32 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - run: make test
+      - name: Smoke-test the built package and entry point
+        run: |
+          python3 -m pip install .
+          granola-switcher --version
+          granola-switcher doctor
+
+  # setup-python has no darwin-arm64 build of 3.9, so verify the floor on
+  # ubuntu; the suite mocks all process interactions and runs cross-platform.
+  test-python-floor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+      - run: make test

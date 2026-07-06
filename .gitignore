@@ -1,0 +1,17 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.coverage
+dist/
+build/
+*.egg-info/
+
+# The switcher stores real Granola profile snapshots outside the repo by
+# default, but keep this ignored in case GRANOLA_SWITCHER_DATA_DIR is pointed
+# at the checkout during local testing.
+profiles/
+backups/
+active-profile
+switch.lock

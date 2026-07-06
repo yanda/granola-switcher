@@ -1,0 +1,33 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "granola-switcher"
+dynamic = ["version"]
+description = "Fast account/profile switcher for the Granola macOS app"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.9"
+authors = [{ name = "Yan-David Erlich" }]
+classifiers = [
+  "Environment :: MacOS X",
+  "Operating System :: MacOS",
+  "Programming Language :: Python :: 3",
+]
+
+[project.urls]
+Homepage = "https://github.com/yanda/granola-switcher"
+
+[project.scripts]
+granola-switcher = "granola_switcher.cli:main"
+
+[tool.hatch.version]
+path = "granola_switcher/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["granola_switcher"]
+
+[tool.hatch.build.targets.sdist]
+include = ["granola_switcher", "bin", "raycast", "tests", "Makefile", "README.md", "LICENSE"]
