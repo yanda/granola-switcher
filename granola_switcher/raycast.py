@@ -6,6 +6,7 @@ from importlib import resources
 from pathlib import Path
 
 ICON_FILENAME = "panda-switcher.png"
+PERSONAL_ICON_FILENAME = "panda-switcher-personal.png"
 STATUS_SCRIPT_FILENAME = "granola-switcher-status.sh"
 
 SCRIPT_TEMPLATE = """#!/bin/bash
@@ -37,8 +38,8 @@ exec "$GS" {arguments}
 """
 
 
-def render_script(*, title: str, arguments: str) -> str:
-    return SCRIPT_TEMPLATE.format(title=title, icon=ICON_FILENAME, arguments=arguments)
+def render_script(*, title: str, arguments: str, icon: str = ICON_FILENAME) -> str:
+    return SCRIPT_TEMPLATE.format(title=title, icon=icon, arguments=arguments)
 
 
 def write_script(path: Path, content: str) -> None:
@@ -47,23 +48,25 @@ def write_script(path: Path, content: str) -> None:
 
 
 def install_scripts(target: Path, profiles: list[tuple[str, str]]) -> list[Path]:
-    """Write Raycast script commands for each (name, title) profile plus a status script and icon."""
+    """Write Raycast script commands for each (name, title) profile plus status and icons."""
     target.mkdir(parents=True, exist_ok=True)
     written: list[Path] = []
 
     for name, title in profiles:
         path = target / f"switch-granola-{name}.sh"
-        write_script(path, render_script(title=f"Granola: {title}", arguments=f"switch {name}"))
+        icon = PERSONAL_ICON_FILENAME if name == "personal" else ICON_FILENAME
+        write_script(path, render_script(title=f"Granola: {title}", arguments=f"switch {name}", icon=icon))
         written.append(path)
 
     status_path = target / STATUS_SCRIPT_FILENAME
     write_script(status_path, render_script(title="Granola: Selected Account", arguments="selected"))
     written.append(status_path)
 
-    icon_source = resources.files("granola_switcher") / "data" / ICON_FILENAME
-    icon_target = target / ICON_FILENAME
-    with resources.as_file(icon_source) as icon_path:
-        shutil.copyfile(icon_path, icon_target)
-    written.append(icon_target)
+    for icon_filename in (ICON_FILENAME, PERSONAL_ICON_FILENAME):
+        icon_source = resources.files("granola_switcher") / "data" / icon_filename
+        icon_target = target / icon_filename
+        with resources.as_file(icon_source) as icon_path:
+            shutil.copyfile(icon_path, icon_target)
+        written.append(icon_target)
 
     return written

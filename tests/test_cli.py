@@ -295,6 +295,7 @@ class GranolaSwitcherTests(unittest.TestCase):
                 names,
                 [
                     "granola-switcher-status.sh",
+                    "panda-switcher-personal.png",
                     "panda-switcher.png",
                     "switch-granola-personal.sh",
                     "switch-granola-work.sh",
@@ -306,12 +307,16 @@ class GranolaSwitcherTests(unittest.TestCase):
             self.assertIn("/opt/homebrew/bin/granola-switcher", script)
             self.assertIn("/usr/local/bin/granola-switcher", script)
             self.assertIn('exec "$GS" switch work', script)
+            personal = (target / "switch-granola-personal.sh").read_text(encoding="utf-8")
+            self.assertIn("# @raycast.icon panda-switcher-personal.png", personal)
+            self.assertIn('exec "$GS" switch personal', personal)
             status = (target / "granola-switcher-status.sh").read_text(encoding="utf-8")
             self.assertIn('exec "$GS" selected', status)
             for name in names:
                 if name.endswith(".sh"):
                     self.assertTrue((target / name).stat().st_mode & stat.S_IXUSR)
             self.assertGreater((target / "panda-switcher.png").stat().st_size, 0)
+            self.assertGreater((target / "panda-switcher-personal.png").stat().st_size, 0)
 
             # Re-running regenerates cleanly.
             install_scripts(target, [("work", "Work"), ("personal", "Personal")])
