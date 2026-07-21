@@ -3,7 +3,7 @@
 # @raycast.title Granola: Personal
 # @raycast.mode compact
 # @raycast.packageName Granola Switcher
-# @raycast.icon ../granola_switcher/data/granola.png
+# @raycast.icon ../granola_switcher/data/panda-switcher.png
 
 set -euo pipefail
 

@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="granola_switcher/data/panda-switcher.png" width="144" alt="Granola Switcher panda icon">
+</p>
+
 # Granola Switcher
 
 Fast local account switching for the [Granola](https://www.granola.ai) Mac app.

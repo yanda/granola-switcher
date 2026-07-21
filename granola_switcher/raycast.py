@@ -5,7 +5,7 @@ import stat
 from importlib import resources
 from pathlib import Path
 
-ICON_FILENAME = "granola.png"
+ICON_FILENAME = "panda-switcher.png"
 STATUS_SCRIPT_FILENAME = "granola-switcher-status.sh"
 
 SCRIPT_TEMPLATE = """#!/bin/bash
